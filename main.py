@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 import os
 pygame.font.init()
 pygame.mixer.init()
@@ -9,9 +10,11 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Counter Battle!")
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
 
-#Sound effects
+# Sound effects and music
 BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join('Assets/Grenade+1.mp3'))
 BULLET_FIRE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Gun+Silencer.mp3'))
+mixer.music.load(os.path.join('Assets', 'infinite-meteor-rain-48450.mp3'))
+mixer.music.set_volume(0.3)
 
 # Font to the health and winner text
 HEALTH_FONT = pygame.font.SysFont('comicsans', 40)
@@ -41,6 +44,7 @@ RED_SPACESHIP_IMAGE = pygame.image.load(os.path.join('Assets', 'spaceship_red.pn
 RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 270)
 SPACE = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'space.png')), (WIDTH, HEIGHT))
 
+
 # Function to create Display
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
     """Function will get variables from above and draw the display"""
@@ -63,6 +67,7 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_hea
 
     pygame.display.update()
 
+
 # Yellow ship movement control
 def yellow_handle_movement(keys_pressed, yellow):
         """Function will define wich keys will control yellow ship"""
@@ -74,6 +79,7 @@ def yellow_handle_movement(keys_pressed, yellow):
             yellow.y -= VEL
         elif keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < HEIGHT - 15: # DOWN
             yellow.y += VEL
+
 
 # Red ship movement control
 def red_handle_movement(keys_pressed, red):
@@ -119,6 +125,7 @@ def draw_winner(text):
 # Function to define main game mechanics
 def main():
     """This function will define main games rules"""
+    mixer.music.play(-1)
     red = pygame.Rect(700, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
     yellow = pygame.Rect(100, 300, SPACESHIP_WIDTH, SPACESHIP_HEIGHT)
 
@@ -130,6 +137,7 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
+    """This will make the game start and end with it's functions defined"""
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -147,7 +155,6 @@ def main():
                       bullet = pygame.Rect(red.x, red.y + red.height//2 + 5, 10, 5)
                       red_bullets.append(bullet)
                       BULLET_FIRE_SOUND.play()
-
             if event.type == RED_HIT:
                  red_health -= 1
                  BULLET_HIT_SOUND.play()
