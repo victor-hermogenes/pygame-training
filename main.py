@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from pygame import mixer
 import os
 pygame.font.init()
@@ -140,10 +140,12 @@ def main():
     """This will make the game start and end with it's functions defined"""
     while run:
         clock.tick(FPS)
+        keys_pressed = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
+                sys.exit
 
             if event.type == pygame.KEYDOWN:
                  if event.key == pygame.K_LCTRL and len(yellow_bullets) < MAX_BULLETS:
@@ -174,7 +176,6 @@ def main():
              draw_winner(winner_text)
              break
 
-        keys_pressed = pygame.key.get_pressed()
         yellow_handle_movement(keys_pressed, yellow)
         red_handle_movement(keys_pressed, red)
 
@@ -184,5 +185,6 @@ def main():
         
     main()
 
+
 if __name__ == "__main__":
-    main()
+     main()
